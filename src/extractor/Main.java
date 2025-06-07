@@ -30,18 +30,18 @@ public class Main extends Mod {
     public static void outputContentSprites() {
         for (Seq<Content> contents : Vars.content.getContentMap()) {
             for (Content content : contents) {
-                try {
-                    if (content instanceof UnlockableContent) {
-                        String name = ((UnlockableContent) content).name;
+                if (content instanceof UnlockableContent) {
+                    String name = ((UnlockableContent) content).name;
+                    try {
                         var icon = ((UnlockableContent) content).fullIcon;
                         Fi fi = iconDir.child(name + ".png");
                         Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
                         PixmapIO.writePng(fi, pixmap);
                         pixmap.dispose();
                         Log.info("Saved " + name + " at " + fi.absolutePath());
+                    } catch (Exception e) {
+                        Log.err("Can not save " + name, e);
                     }
-                } catch (Exception e) {
-                    Log.err(e);
                 }
             }
         }
