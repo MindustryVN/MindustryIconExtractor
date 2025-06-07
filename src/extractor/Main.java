@@ -30,10 +30,10 @@ public class Main extends Mod {
     public static void outputContentSprites() {
         for (Seq<Content> contents : Vars.content.getContentMap()) {
             for (Content content : contents) {
-                if (content instanceof UnlockableContent) {
-                    String name = ((UnlockableContent) content).name;
+                if (content instanceof UnlockableContent unlockableContent) {
+                    String name = unlockableContent.name;
                     try {
-                        var icon = ((UnlockableContent) content).fullIcon;
+                        var icon = unlockableContent.fullIcon;
                         Fi fi = iconDir.child(name + ".png");
                         Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
                         PixmapIO.writePng(fi, pixmap);
