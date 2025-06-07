@@ -4,11 +4,8 @@ import arc.*;
 import arc.files.Fi;
 import arc.graphics.Pixmap;
 import arc.graphics.PixmapIO;
-import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.*;
-import mindustry.ctype.Content;
-import mindustry.ctype.UnlockableContent;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.mod.*;
@@ -28,21 +25,17 @@ public class Main extends Mod {
     }
 
     public static void outputContentSprites() {
-        for (Seq<Content> contents : Vars.content.getContentMap()) {
-            for (Content content : contents) {
-                if (content instanceof UnlockableContent unlockableContent) {
-                    String name = unlockableContent.name;
-                    try {
-                        var icon = unlockableContent.fullIcon;
-                        Fi fi = iconDir.child(name + ".png");
-                        Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
-                        PixmapIO.writePng(fi, pixmap);
-                        pixmap.dispose();
-                        Log.info("Saved " + name + " at " + fi.absolutePath());
-                    } catch (Exception e) {
-                        Log.err("Can not save " + name, e);
-                    }
-                }
+        for (var block : Vars.content.blocks()) {
+            String name = block.name;
+            try {
+                var icon = block.fullIcon;
+                Fi fi = iconDir.child(name + ".png");
+                Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
+                PixmapIO.writePng(fi, pixmap);
+                pixmap.dispose();
+                Log.info("Saved " + name + " at " + fi.absolutePath());
+            } catch (Exception e) {
+                Log.err("Can not save " + name, e);
             }
         }
     }
