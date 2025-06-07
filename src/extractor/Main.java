@@ -25,6 +25,18 @@ public class Main extends Mod {
     }
 
     public static void outputContentSprites() {
+        Core.atlas.getRegions().each(region -> {
+            String name = region.name;
+            try {
+                Fi fi = iconDir.child(name + ".png");
+                var pixmap = region.pixmapRegion.crop();
+                PixmapIO.writePng(fi, pixmap);
+                pixmap.dispose();
+                Log.info("Saved " + name + " at " + fi.absolutePath());
+            } catch (Exception e) {
+                Log.err("Can not save " + name, e);
+            }
+        });
         for (var block : Vars.content.blocks()) {
             String name = block.name;
             try {
