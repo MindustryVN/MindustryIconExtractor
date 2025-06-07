@@ -19,7 +19,7 @@ public class Main extends Mod {
 
         Events.on(ClientLoadEvent.class, e -> {
             Vars.ui.menufrag.addButton("Extract Icon", Icon.map, () -> {
-                outputContentSprites();
+                new Thread(Main::outputContentSprites).start();
             });
         });
     }
