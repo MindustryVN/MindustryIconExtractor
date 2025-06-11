@@ -36,14 +36,19 @@ public class Main extends Mod {
         Core.atlas.getRegionMap().each((name, region) -> {
             executorService.submit(() -> {
                 try {
-                    Fi fi = iconDir.child(name + ".png");
                     Log.info("Region: " + name + " x: " + region.getX() + " y: " + region.getY() + " width: "
                             + region.width + " height: " + region.height + " offsetX: " + region.offsetX + " offsetY: "
                             + region.offsetY);
 
-                    var pixmap = region.texture.getTextureData().getPixmap().crop(region.getX(), region.getY(),
-                            region.width, region.height);
+                    var pixmapRegion = Core.atlas.getPixmap(region);
 
+                    if (pixmapRegion.height <= 1 && pixmapRegion.width <= 1) {
+                        Log.info("Region: " + name + " is empty");
+                        return;
+                    }
+
+                    Pixmap pixmap = pixmapRegion.crop();
+                    Fi fi = iconDir.child(name + ".png");
                     PixmapIO.writePng(fi, pixmap);
                     saved++;
                     if (saved % 100 == 0) {
