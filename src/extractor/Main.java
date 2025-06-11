@@ -18,6 +18,8 @@ public class Main extends Mod {
     private static Fi iconDir = Vars.dataDirectory.child("icon");
     private static ExecutorService executorService = Executors.newWorkStealingPool();
 
+    private static int saved = 0;
+
     public Main() {
         iconDir.mkdirs();
         iconDir.emptyDirectory();
@@ -29,7 +31,8 @@ public class Main extends Mod {
         });
     }
 
-    public static void outputContentSprites() {
+    public static synchronized void outputContentSprites() {
+        saved = 0;
         Core.atlas.getRegionMap().each((name, region) -> {
             executorService.submit(() -> {
                 try {
@@ -38,7 +41,14 @@ public class Main extends Mod {
                     PixmapIO.writePng(fi, pixmap);
                     pixmap.dispose();
                     Log.info("Saved " + name + " at " + fi.absolutePath());
+                    saved++;
+                    if (saved % 100 == 0) {
+                        Log.info("Saved " + saved + " icons");
+                    }
 
+                    if (saved >= Core.atlas.getRegions().size) {
+                        Log.info("Saved all icons");
+                    }
                 } catch (Exception e) {
                     Log.err("Can not save " + name, e);
                 }
