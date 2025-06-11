@@ -37,9 +37,12 @@ public class Main extends Mod {
             executorService.submit(() -> {
                 try {
                     Fi fi = iconDir.child(name + ".png");
-                    Pixmap pixmap = Core.atlas.getPixmap(region).crop();
+                    Log.info("Region: " + name + "x: " + region.getX() + " y: " + region.getY() + " width: "
+                            + region.width + " height: " + region.height + " offsetX: " + region.offsetX + " offsetY: "
+                            + region.offsetY);
+                    var pixmapRegion = Core.atlas.getPixmap(region);
+                    Pixmap pixmap = pixmapRegion.crop();
                     PixmapIO.writePng(fi, pixmap);
-                    Log.info("Saved " + name + " at " + fi.absolutePath());
                     saved++;
                     if (saved % 100 == 0) {
                         Log.info("Saved " + saved + " icons");
