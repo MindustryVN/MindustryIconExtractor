@@ -34,10 +34,10 @@ public class Main extends Mod {
     public static synchronized void outputContentSprites() {
         saved = 0;
         Core.atlas.getRegionMap().each((name, region) -> {
+            var pixmapRegion = Core.atlas.getPixmap(region);
+
             executorService.submit(() -> {
                 try {
-
-                    var pixmapRegion = Core.atlas.getPixmap(region);
 
                     if (pixmapRegion.height <= 1 && pixmapRegion.width <= 1) {
                         Log.info("Region: " + name + " x: " + region.getX() + " y: " + region.getY()
