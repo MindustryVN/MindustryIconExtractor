@@ -1,5 +1,8 @@
 package extractor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import arc.*;
 import arc.files.Fi;
 import arc.graphics.Pixmap;
@@ -13,6 +16,7 @@ import mindustry.mod.*;
 public class Main extends Mod {
 
     private static Fi iconDir = Vars.dataDirectory.child("icon");
+    private static ExecutorService executorService = Executors.newWorkStealingPool();
 
     public Main() {
         iconDir.mkdirs();
@@ -26,14 +30,17 @@ public class Main extends Mod {
     }
 
     public static void outputContentSprites() {
+
         for (var block : Vars.content.blocks()) {
             String name = block.name;
             try {
-                var icon = block.fullIcon;
-                Fi fi = iconDir.child(name + ".png");
-                Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
-                PixmapIO.writePng(fi, pixmap);
-                Log.info("Saved block " + name + " at " + fi.absolutePath());
+                executorService.submit(() -> {
+                    var icon = block.fullIcon;
+                    Fi fi = iconDir.child(name + ".png");
+                    Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
+                    PixmapIO.writePng(fi, pixmap);
+                    Log.info("Saved block " + name + " at " + fi.absolutePath());
+                });
             } catch (Exception e) {
                 Log.err("Can not save " + name, e);
             }
