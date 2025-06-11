@@ -44,8 +44,7 @@ public class Main extends Mod {
                                 + " texture width: " + region.texture.width + " texture height: "
                                 + region.texture.height
                                 + " width: " + region.width + " height: " + region.height
-                                + " offsetX: " + region.offsetX
-                                + " offsetY: " + region.offsetY);
+                                + " pixmap width: " + pixmapRegion.width + " pixmap height: " + pixmapRegion.height);
                         return;
                     }
 
