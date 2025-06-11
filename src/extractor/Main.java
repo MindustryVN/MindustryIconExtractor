@@ -7,6 +7,7 @@ import arc.*;
 import arc.files.Fi;
 import arc.graphics.Pixmap;
 import arc.graphics.PixmapIO;
+import arc.graphics.Pixmaps;
 import arc.util.Log;
 import mindustry.*;
 import mindustry.game.EventType.*;
@@ -34,21 +35,21 @@ public class Main extends Mod {
     public static synchronized void outputContentSprites() {
         saved = 0;
         Core.atlas.getRegionMap().each((name, region) -> {
-            var pixmapRegion = Core.atlas.getPixmap(region);
+            Pixmap pix = Core.atlas.getPixmaps().get(region.texture, () -> region.texture.getTextureData().getPixmap());
 
             executorService.submit(() -> {
+                var pixmap = Pixmaps.crop(pix, region.getX(), region.getY(), region.width, region.height);
                 try {
 
-                    if (pixmapRegion.height <= 1 && pixmapRegion.width <= 1) {
+                    if (pixmap.height <= 1 && pixmap.width <= 1) {
                         Log.info("Region: " + name + " x: " + region.getX() + " y: " + region.getY()
                                 + " texture width: " + region.texture.width + " texture height: "
                                 + region.texture.height
                                 + " width: " + region.width + " height: " + region.height
-                                + " pixmap width: " + pixmapRegion.width + " pixmap height: " + pixmapRegion.height);
+                                + " pixmap width: " + pixmap.width + " pixmap height: " + pixmap.height);
                         return;
                     }
 
-                    Pixmap pixmap = pixmapRegion.crop();
                     Fi fi = iconDir.child(name + ".png");
                     PixmapIO.writePng(fi, pixmap);
                     saved++;
