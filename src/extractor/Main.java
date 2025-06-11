@@ -44,7 +44,8 @@ public class Main extends Mod {
             String name = region.name;
             try {
                 Fi fi = iconDir.child(name + ".png");
-                var pixmap = region.pixmapRegion.crop();
+                var pixmap = new Pixmap(region.texture.width, region.texture.height);
+                region.texture.draw(pixmap);
                 PixmapIO.writePng(fi, pixmap);
                 pixmap.dispose();
                 Log.info("Saved region " + name + " at " + fi.absolutePath());
