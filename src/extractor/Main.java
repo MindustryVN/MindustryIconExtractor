@@ -16,6 +16,7 @@ public class Main extends Mod {
 
     public Main() {
         iconDir.mkdirs();
+        iconDir.emptyDirectory();
 
         Events.on(ClientLoadEvent.class, e -> {
             Vars.ui.menufrag.addButton("Extract Icon", Icon.map, () -> {
@@ -25,18 +26,6 @@ public class Main extends Mod {
     }
 
     public static void outputContentSprites() {
-        Core.atlas.getRegions().each(region -> {
-            String name = region.name;
-            try {
-                Fi fi = iconDir.child(name + ".png");
-                var pixmap = region.pixmapRegion.crop();
-                PixmapIO.writePng(fi, pixmap);
-                pixmap.dispose();
-                Log.info("Saved " + name + " at " + fi.absolutePath());
-            } catch (Exception e) {
-                Log.err("Can not save " + name, e);
-            }
-        });
         for (var block : Vars.content.blocks()) {
             String name = block.name;
             try {
@@ -45,10 +34,23 @@ public class Main extends Mod {
                 Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
                 PixmapIO.writePng(fi, pixmap);
                 pixmap.dispose();
-                Log.info("Saved " + name + " at " + fi.absolutePath());
+                Log.info("Saved block " + name + " at " + fi.absolutePath());
             } catch (Exception e) {
                 Log.err("Can not save " + name, e);
             }
         }
+
+        Core.atlas.getRegions().each(region -> {
+            String name = region.name;
+            try {
+                Fi fi = iconDir.child(name + ".png");
+                var pixmap = region.pixmapRegion.crop();
+                PixmapIO.writePng(fi, pixmap);
+                pixmap.dispose();
+                Log.info("Saved region " + name + " at " + fi.absolutePath());
+            } catch (Exception e) {
+                Log.err("Can not save " + name, e);
+            }
+        });
     }
 }
