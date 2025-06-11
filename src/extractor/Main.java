@@ -39,7 +39,6 @@ public class Main extends Mod {
                     Fi fi = iconDir.child(name + ".png");
                     Pixmap pixmap = Core.atlas.getPixmap(region).crop();
                     PixmapIO.writePng(fi, pixmap);
-                    pixmap.dispose();
                     Log.info("Saved " + name + " at " + fi.absolutePath());
                     saved++;
                     if (saved % 100 == 0) {
