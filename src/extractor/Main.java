@@ -30,20 +30,19 @@ public class Main extends Mod {
     }
 
     public static void outputContentSprites() {
-
-        for (var block : Vars.content.blocks()) {
-            String name = block.name;
-            try {
-                executorService.submit(() -> {
-                    var icon = block.fullIcon;
+        Core.atlas.getRegionMap().each((name, region) -> {
+            executorService.submit(() -> {
+                try {
                     Fi fi = iconDir.child(name + ".png");
-                    Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
+                    Pixmap pixmap = Core.atlas.getPixmap(region).crop();
                     PixmapIO.writePng(fi, pixmap);
-                    Log.info("Saved block " + name + " at " + fi.absolutePath());
-                });
-            } catch (Exception e) {
-                Log.err("Can not save " + name, e);
-            }
-        }
+                    pixmap.dispose();
+                    Log.info("Saved " + name + " at " + fi.absolutePath());
+
+                } catch (Exception e) {
+                    Log.err("Can not save " + name, e);
+                }
+            });
+        });
     }
 }
