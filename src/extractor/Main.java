@@ -34,6 +34,9 @@ public class Main extends Mod {
 
     public static synchronized void outputContentSprites() {
         saved = 0;
+
+        Log.info("Extracting " + Core.atlas.getRegions().size + " icons");
+
         Core.atlas.getRegionMap().each((name, region) -> {
             Pixmap pix = Core.atlas.getPixmaps().get(region.texture, () -> region.texture.getTextureData().getPixmap());
 
