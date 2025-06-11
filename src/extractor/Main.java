@@ -39,19 +39,5 @@ public class Main extends Mod {
                 Log.err("Can not save " + name, e);
             }
         }
-
-        Core.atlas.getRegions().each(region -> {
-            String name = region.name;
-            try {
-                Fi fi = iconDir.child(name + ".png");
-                var pixmap = new Pixmap(region.texture.width, region.texture.height);
-                region.texture.draw(pixmap);
-                PixmapIO.writePng(fi, pixmap);
-                pixmap.dispose();
-                Log.info("Saved region " + name + " at " + fi.absolutePath());
-            } catch (Exception e) {
-                Log.err("Can not save " + name, e);
-            }
-        });
     }
 }
