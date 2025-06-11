@@ -33,7 +33,6 @@ public class Main extends Mod {
                 Fi fi = iconDir.child(name + ".png");
                 Pixmap pixmap = Core.atlas.getPixmap(icon).crop();
                 PixmapIO.writePng(fi, pixmap);
-                pixmap.dispose();
                 Log.info("Saved block " + name + " at " + fi.absolutePath());
             } catch (Exception e) {
                 Log.err("Can not save " + name, e);
