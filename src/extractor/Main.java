@@ -46,8 +46,10 @@ public class Main extends Mod {
                     }
 
                     if (saved >= Core.atlas.getRegions().size) {
-                        Log.info("Saved all icons");
+                        Log.info("Saved all icons: " + saved);
                     }
+
+                    pixmap.dispose();
                 } catch (Exception e) {
                     Log.err("Can not save " + name, e);
                 }
