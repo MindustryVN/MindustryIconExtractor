@@ -37,17 +37,13 @@ public class Main extends Mod {
             executorService.submit(() -> {
                 try {
                     Fi fi = iconDir.child(name + ".png");
-                    Log.info("Region: " + name + "x: " + region.getX() + " y: " + region.getY() + " width: "
+                    Log.info("Region: " + name + " x: " + region.getX() + " y: " + region.getY() + " width: "
                             + region.width + " height: " + region.height + " offsetX: " + region.offsetX + " offsetY: "
                             + region.offsetY);
-                    var pixmapRegion = Core.atlas.getPixmap(region);
 
-                    if (pixmapRegion.height <= 1 && pixmapRegion.width <= 1) {
-                        Log.info("Region: " + name + " is empty");
-                        return;
-                    }
+                    var pixmap = region.texture.getTextureData().getPixmap().crop(region.getX(), region.getY(),
+                            region.width, region.height);
 
-                    Pixmap pixmap = pixmapRegion.crop();
                     PixmapIO.writePng(fi, pixmap);
                     saved++;
                     if (saved % 100 == 0) {
