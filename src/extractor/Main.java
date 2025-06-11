@@ -37,9 +37,9 @@ public class Main extends Mod {
 
         Log.info("Extracting " + Core.atlas.getRegions().size + " icons");
 
-        Core.atlas.getRegionMap().each((name, region) -> {
+        Core.atlas.getRegions().each((region) -> {
+            var name = region.name;
             Pixmap pix = Core.atlas.getPixmaps().get(region.texture, () -> region.texture.getTextureData().getPixmap());
-
             executorService.submit(() -> {
                 var pixmap = Pixmaps.crop(pix, region.getX(), region.getY(), region.width, region.height);
                 try {
