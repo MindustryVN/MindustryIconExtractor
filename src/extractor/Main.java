@@ -36,14 +36,16 @@ public class Main extends Mod {
         Core.atlas.getRegionMap().each((name, region) -> {
             executorService.submit(() -> {
                 try {
-                    Log.info("Region: " + name + " x: " + region.getX() + " y: " + region.getY() + " width: "
-                            + region.width + " height: " + region.height + " offsetX: " + region.offsetX + " offsetY: "
-                            + region.offsetY);
 
                     var pixmapRegion = Core.atlas.getPixmap(region);
 
                     if (pixmapRegion.height <= 1 && pixmapRegion.width <= 1) {
-                        Log.info("Region: " + name + " is empty");
+                        Log.info("Region: " + name + " x: " + region.getX() + " y: " + region.getY()
+                                + " texture width: " + region.texture.width + " texture height: "
+                                + region.texture.height
+                                + " width: " + region.width + " height: " + region.height
+                                + " offsetX: " + region.offsetX
+                                + " offsetY: " + region.offsetY);
                         return;
                     }
 
